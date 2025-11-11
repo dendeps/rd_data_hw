@@ -6,11 +6,11 @@ from datetime import datetime
 import os
 from flask import Flask, request
 from flask import typing as flask_typing
-
+from dotenv import load_dotenv
 from bll.sales_api import save_sales_to_local_disk
 
-
-AUTH_TOKEN = os.environ.get("API_AUTH_TOKEN")
+load_dotenv()
+AUTH_TOKEN = os.getenv("API_AUTH_TOKEN")
 
 
 if not AUTH_TOKEN:
@@ -32,6 +32,7 @@ def main() -> flask_typing.ResponseReturnValue:
     """
     input_data: dict = request.json
     date = input_data.get('date')
+    #raw_dir = "../" + input_data.get('raw_dir')
     raw_dir = input_data.get('raw_dir')
 
     if not date:
