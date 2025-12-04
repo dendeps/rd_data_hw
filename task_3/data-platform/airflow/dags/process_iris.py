@@ -5,6 +5,9 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from python_scripts.train_model import process_iris_data
+from zoneinfo import ZoneInfo
+from airflow.utils import timezone
+
 
 # Import our custom operator
 from dbt_operator import DbtOperator
@@ -16,7 +19,9 @@ PROFILE = 'homework'
 
 DEFAULT_ARGS = {
     'owner': 'airflow',
+    "email": ["your_email@gmail.com"], 
     'depends_on_past': False,
+    "email_on_success": True,
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
@@ -35,11 +40,12 @@ dbt_vars = {
     'data_date': '{{ ds }}',  # Uses Airflow's ds (execution date) macro
 }
 
+
 with DAG(
     dag_id="process_iris",
     default_args=DEFAULT_ARGS,
-    schedule_interval="@daily",
-    start_date=datetime(2025,12,1),
+    start_date=timezone.datetime(2025, 12, 1, 1, 0),  # uses Airflow default timezone
+    schedule_interval="0 1 * * *",  # 01:00 за Києвом
     catchup=True,
     max_active_runs=4,
 ) as dag:
