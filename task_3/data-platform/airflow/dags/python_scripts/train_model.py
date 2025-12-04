@@ -63,15 +63,15 @@ def process_iris_data(**kwargs):
     importances = clf.feature_importances_
     feature_names = X_train.columns
     feature_importance_df = pd.DataFrame({
-                              'Feature': feature_names,
-                              'Importance': importances
+                              'feature': feature_names,
+                              'importance': importances
                             })
     
     # Select the top 5 features
     top_features = feature_importance_df.sort_values(
-                      by='Importance',
+                      by='importance',
                       ascending=False
-                    ).head(5)['Feature'].tolist()
+                    ).head(5)['feature'].tolist()
     
     print(f"Top 5 features: {', '.join(top_features)}")
     
