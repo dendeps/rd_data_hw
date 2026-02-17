@@ -1,0 +1,17 @@
+SELECT
+  u.state,
+  COUNT(*) AS tv_purchases
+FROM sales_a5b6f215cd24adf5b1f8b0100e9cb105 s
+JOIN gold u
+  ON s.client_id = u.client_id
+WHERE s.purchase_date BETWEEN DATE '2022-09-01' AND DATE '2022-09-10'
+  AND date_diff('year', CAST(u.birth_date AS date), s.purchase_date) BETWEEN 20 AND 30
+  AND lower(s.product_name) LIKE '%tv%'
+GROUP BY u.state
+ORDER BY tv_purchases DESC
+LIMIT 1;
+
+
+// result: 	
+Idaho
+180
